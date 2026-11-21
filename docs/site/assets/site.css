@@ -74,6 +74,7 @@
 .md-typeset .sf-sample pre, .md-typeset .sf-sample code {
   background: transparent; color: #f2f8f9; margin: 0; padding: 0; line-height: 1.65;
 }
+.md-typeset .sf-sample .md-code__button { color: #e7f4f6; background: #284a5a; }
 .md-typeset .sf-paths { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
 .md-typeset .sf-path {
   border: 1px solid var(--sf-line); background: var(--sf-panel); border-radius: .45rem; padding: .85rem 1rem;
@@ -87,4 +88,8 @@
 .md-typeset .sf-step span { font-size: .73rem; margin-top: .2rem; }
 @media (max-width: 48rem) {
   .md-typeset .sf-hero, .md-typeset .sf-paths, .md-typeset .sf-flow { grid-template-columns: 1fr; }
+}
+@media (min-width: 76.25em) {
+  .md-main__inner:has(.sf-hero) { max-width: 55rem; }
+  .md-main__inner:has(.sf-hero) > .md-sidebar--primary { display: none; }
 }

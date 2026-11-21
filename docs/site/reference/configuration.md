@@ -15,7 +15,7 @@ max_page_size = 100
 | Section name | Yes | A lowercase ASCII letter followed by up to 62 lowercase letters, digits, underscores or hyphens. `[tables.orders]` maps to `/v1/tables/orders`. |
 | `table` | Yes | A Snowflake relation name. Supply a single name in the deployment's `API` schema or exactly three parts, `DB.SCHEMA.OBJECT`. |
 | `kind` | No | `"table"` by default. Use `"view"` for a view. The value selects the object kind for metadata and caller grants. |
-| `columns` | No | Nonempty list of distinct published column names, in response order. Omitting it snapshots all columns visible at preparation. Every key must be in the projection. |
+| `columns` | No | Nonempty list of distinct published column names, in response order. Omitting it snapshots all visible regular columns. The publisher includes DESCRIBE entries of kind `COLUMN`. Every key must be in the projection. |
 | `key` | Conditional | Ordered list of one to four distinct column names. Omit to discover a table's declared primary key. Supply it for a keyless table or view. |
 | `max_page_size` | No | Integer from 1 through 1,000, default 100. The HTTP request default is the smaller of 50 and this limit. The shipped demo sets 50. |
 

@@ -31,7 +31,7 @@ Set `SNOWFASTAPI_TEST_ROLE` if the sample-data test needs a particular role. For
 
 Choose two existing test identities with different expected entitlements. Each needs a service share. Use a separate browser profile or named connection for each.
 
-1. Record the expected rows and any masked values with a direct SELECT under each user's default role.
+1. In a direct SQL session for each user, select that user's default role, run `USE SECONDARY ROLES NONE`, and record `CURRENT_ROLE()` and `CURRENT_SECONDARY_ROLES()`. Record expected rows and masked values with a SELECT ordered by the published key. Compare by key if the SQL client's display order differs.
 2. Read the same route as each user, including a second page. Compare rows and masked fields with that user's expected results.
 3. For a user whose default role has no data access, expect a 403 on the data route even if sign-in succeeds. A user with an applicable row policy may instead get 200 and fewer rows.
 
