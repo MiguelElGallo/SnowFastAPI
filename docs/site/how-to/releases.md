@@ -23,7 +23,7 @@ Omit `--previous` for the first publication. For later releases supply the catal
 
 ## Apply grants and publish
 
-The grant administrator runs the first two commands. The service owner publishes the prepared package, then shares the service with the configured reader role.
+The first file needs an administrator who can grant the schema CREATE privileges and the account-level `BIND SERVICE ENDPOINT` privilege. The second file needs a grant administrator with account-level `MANAGE CALLER GRANTS` and at least one privilege on each object named in a caller grant. In the example, `GRANT_ROLE` has both sets of privileges. If your organization assigns them separately, each administrator runs their file with their own connection and role. The service owner publishes the package and shares it with the configured reader. [Snowflake caller grant requirements](https://docs.snowflake.com/en/sql-reference/sql/grant-caller#access-control-requirements)
 
 ```sh
 snow sql -c "$DEV_CONNECTION" --role "$GRANT_ROLE" -f build/release-2/publisher-grants.sql
@@ -35,11 +35,11 @@ snow sql -c "$DEV_CONNECTION" --role SNOWFASTAPI_DEV_OWNER -f build/release-2/sh
 
 Check the running package's `source` and `is_upgrading` in `DESCRIBE APPLICATION SERVICE SNOWFASTAPI_DEV.API.SNOWFASTAPI`. Read the changed route. When those checks pass, the grant administrator applies `retire-caller-grants.sql` if the file is nonempty. Keep the published catalog as the baseline for the next release.
 
-The combined `deploy` command automates this sequence and writes `last-published.json` after grant retirement. Persist its `build/deployments/` directory across CI runs and serialize deploys for the same service. The built-in file lock coordinates processes sharing one local checkout.
+The combined `deploy` command checks for a running service URL and completed upgrade, then shares the service, retires privileges and writes `last-published.json`. Checking the specific package version and reading a changed route are operator checks. Use the split procedure above when they must happen before grant retirement. Persist `build/deployments/` across CI runs and serialize deploys for the same service. The built-in file lock coordinates processes sharing one local checkout.
 
 ## Remove a route
 
-Delete its section from `tables.toml` while the old source object still exists. Prepare against the last published catalog. Confirm the route disappears and that each proposed revocation belongs to the retired source. Grants needed by another configured route should remain. Publish, then verify that the removed HTTP path returns 404. Retire the source object afterward if its owner intends to do so.
+Delete its section from `tables.toml` while the old source object still exists. At least one dataset must remain in the file. Prepare against the last published catalog. Confirm the route disappears and that each proposed revocation belongs to the retired source. Grants needed by another configured route should remain. Publish, then verify that the removed HTTP path returns 404. In the split flow, run the nonempty `retire-caller-grants.sql` and verify `SHOW CALLER GRANTS TO ROLE` before the source owner drops or renames the relation.
 
 If the source was already renamed or dropped, an old-name revoke can fail with Snowflake error 2003 after the new package goes live. Check the service's actual version, the current caller grants, and both release catalogs. An administrator must reconcile the removed or renamed object and verify each outstanding privilege before adopting the live catalog as the next baseline. Retrying the same old-name revoke can repeat the error.
 

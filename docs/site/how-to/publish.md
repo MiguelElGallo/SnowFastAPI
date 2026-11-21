@@ -16,7 +16,7 @@ The section name becomes `/v1/tables/orders`. The publisher reads the declared p
 
 ## Choose which columns to publish
 
-If you omit `columns`, the release captures all columns visible during preparation. To keep newly added source columns out of future releases until you approve them, replace the example section above with the following section. Include every pagination key.
+If you omit `columns`, the release captures the visible regular columns reported by DESCRIBE. To keep newly added source columns out of future releases until you approve them, replace the example section above with the following section. Include every pagination key.
 
 ```toml
 [tables.orders]

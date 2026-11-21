@@ -15,9 +15,9 @@ The API projects named columns and preserves their Snowflake names. JSON strings
 | DATE | ISO date string | `"2026-01-31"` |
 | TIME or TIMESTAMP | String with nine fractional digits. Zoned timestamps include an offset. | `"12:00:00.123456789"` |
 | BINARY | Standard base64 string | `"AQI="` for bytes 1 and 2 |
-| VARIANT, OBJECT or ARRAY returned as JSON text | Parsed JSON value with the same precision rules for nested numbers | `{"count": 2}` |
+| VARIANT, OBJECT or ARRAY returned as JSON text | Parsed JSON value. Integers follow the safe-range rule. Fractional JSON numbers are parsed as decimals and returned as strings. | `{"count": 2, "amount": "1.50"}` |
 | Snowflake-specific text inside a semi-structured value | Original string when it cannot be parsed as JSON | Sparse array containing a bare `undefined` |
 
-Returned values depend on the Snowflake connector's representation. Day-time intervals returned as Python `timedelta` currently fail page serialization. Numeric-key structured MAP values were returned as JSON text by the tested connection. A connector-native map with non-string keys can fail the response model. Use an explicit projection to omit unsupported columns, or expose a source representation you have tested before publishing it.
+Returned values depend on the Snowflake connector's representation. Day-time intervals returned as Python `timedelta` currently fail page serialization. The tested connection returned numeric-key structured MAP values as text, so the API returned a JSON string containing the map. A connector-native map with non-string keys can fail the response model. Use an explicit projection to omit unsupported columns, or expose a source representation you have tested before publishing it.
 
 [Dataset configuration](configuration.md) controls the projection. [Pagination key types](configuration.md#pagination-keys) are a smaller set because the API must compare and resume from key values exactly.
