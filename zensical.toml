@@ -1,0 +1,67 @@
+[project]
+site_name = "SnowFastAPI"
+site_description = "Publish Snowflake tables as paginated, read-only FastAPI endpoints and query them with your Snowflake identity."
+site_url = "https://example.invalid/SnowFastAPI/"
+docs_dir = "docs/site"
+site_dir = "site"
+extra_css = ["assets/site.css"]
+extra_javascript = ["assets/navigation.js"]
+nav = [
+  { "Overview" = "index.md" },
+  { "Tutorial" = [{ "Read your first five rows" = "tutorials/read-five-rows.md" }] },
+  { "How-to guides" = [
+    { "Deploy the demo" = "how-to/deploy.md" },
+    { "Publish a table" = "how-to/publish.md" },
+    { "Use the Python client" = "how-to/client.md" },
+    { "Manage access" = "how-to/access.md" },
+    { "Release and recover" = "how-to/releases.md" },
+    { "Test a deployment" = "how-to/test.md" },
+    { "Troubleshoot a request" = "how-to/troubleshoot.md" },
+  ] },
+  { "Reference" = [
+    { "Dataset configuration" = "reference/configuration.md" },
+    { "HTTP API" = "reference/http.md" },
+    { "JSON and Snowflake types" = "reference/types.md" },
+    { "Commands and release files" = "reference/commands.md" },
+  ] },
+  { "Explanation" = [
+    { "How a request reaches Snowflake" = "explanation/architecture.md" },
+    { "How pagination stays ordered" = "explanation/pagination.md" },
+  ] },
+]
+
+[project.theme]
+variant = "modern"
+language = "en"
+font = false
+icon.logo = "lucide/database"
+features = [
+  "navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top",
+  "navigation.tracking", "search.highlight", "content.code.copy", "toc.follow",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[project.markdown_extensions]
+attr_list = {}
+md_in_html = {}
+admonition = {}
+pymdownx.details = {}
+pymdownx.highlight.anchor_linenums = true
+pymdownx.inlinehilite = {}
+pymdownx.superfences = {}
+toc.permalink = true
