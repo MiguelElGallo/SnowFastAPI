@@ -151,6 +151,8 @@ activemq-data/
 
 # Environments
 .env
+.env.*
+!.env.example
 .envrc
 .venv
 env/
@@ -171,6 +173,15 @@ conda-meta/
 
 # mkdocs/Zensical documentation
 /site
+/.cache/
+
+# Local Snowflake connection settings and signing keys
+.snowflake/
+connections.toml
+*.p8
+*.pem
+*.key
+*.p12
 
 # mypy
 .mypy_cache/

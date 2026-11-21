@@ -27,4 +27,13 @@ uv run --frozen --group client playwright install chromium
 uv run --frozen --group client python client.py "$APP_URL" demo --limit 2 --pages 3
 ```
 
-Complete Snowflake sign-in in the temporary browser window. The client waits up to three minutes during the sign-in polling phase, reads pages using that session and closes the browser. To use an installed browser, add `--channel chrome` or `--channel msedge`. For long paginated reads, use the named connection mode. The browser client retains response bodies until its context closes. [Client flags](../reference/commands.md#python-client)
+Complete Snowflake sign-in in the temporary browser window. The client waits up to three minutes during sign-in polling, releases each response after reading it, and closes the browser at the end. To use an installed browser, add `--channel chrome` or `--channel msedge`. [Client flags](../reference/commands.md#python-client)
+
+## Resume an interrupted read
+
+Take `next_cursor` from the last page you saved. Start a fresh session for the same route and pass it as `--cursor`. The first page printed by this command follows the saved position. Use the same option in browser mode. If the saved cursor is null, you have reached the end.
+
+```sh
+uv run --frozen python client.py demo -c "$DEV_CONNECTION" \
+  --role SNOWFASTAPI_DEV_READER --cursor "$LAST_CURSOR" --limit 2 --pages 3
+```

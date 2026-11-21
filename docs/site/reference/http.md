@@ -7,7 +7,7 @@ Use the HTTPS origin assigned to your Application Service. Snowflake authenticat
 | `GET /` | Redirects to the OpenAPI JSON document. |
 | `GET /openapi.json` | Machine-readable contract listing the routes in this release and each route's limit. |
 | `GET /healthz` | Returns `{"status":"ok"}` when the Python process is ready. It does not query a warehouse. |
-| `GET /docs` | FastAPI Swagger HTML. On the tested hosted service the gateway blocked its CDN assets. Use `/openapi.json` to inspect the live contract. |
+| `GET /docs` | Interactive Swagger UI, with scripts and styles served by this application. Sign in at the service origin to try a route. |
 | `GET /v1/tables/{name}` | Returns a page of rows for a configured dataset. A single database query serves each successful request. |
 
 ## Request parameters
@@ -41,8 +41,10 @@ Use the HTTPS origin assigned to your Application Service. Snowflake authenticat
 | 413 | Serialized item data for the page exceeds 4 MiB. Select fewer rows or narrower columns. |
 | 422 | Request validation failed, including a limit outside the allowed range or an overlong cursor. |
 | 429 | All four query slots in the process are busy. `Retry-After: 1` requests a one-second wait. |
-| 500 | An unhandled application error occurred, including unsupported connector-native output values in this release. |
+| 500 | An unexpected application error occurred. |
 | 503 | A database failure could not be handled more specifically. |
-| 504 | The Snowflake statement timed out. The service sets a 30-second statement timeout. |
+| 504 | Snowflake canceled the query or it exceeded its timeout. The service sets a 30-second statement timeout. |
+
+Application-generated errors use a JSON object with a string `detail` field. The route's OpenAPI responses describe that shape, including for a 422. Gateway sign-in redirects happen before the application handles the request.
 
 The size limit applies to item data. It excludes the JSON envelope and cursor. Query slots and connections are per running process. See [Troubleshoot a request](../how-to/troubleshoot.md) for diagnosis.

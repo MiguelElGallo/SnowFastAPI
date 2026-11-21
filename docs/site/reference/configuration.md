@@ -58,4 +58,6 @@ The DEV defaults live in `dcm/manifest.yml`. The default target selects its temp
 | `app_owner` | `SNOWFASTAPI_DEV_OWNER` | Owns the Application Service and receives restricted caller grants. |
 | `reader_role` | `SNOWFASTAPI_DEV_READER` | Receives service USAGE and ordinary reads on the sample table. |
 
+Use three distinct dedicated roles for the DCM owner, application owner and reader. The publisher rejects overlapping role names before executing the deployment.
+
 The service name is `<database_name>.API.SNOWFASTAPI`. The app manifest sets Python, serverless compute and `/healthz` for readiness. See [deployment commands](commands.md#deployment-commands).

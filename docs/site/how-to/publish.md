@@ -30,7 +30,7 @@ A keyless table needs an explicit `key`. A view also needs `kind = "view"` and a
 
 ## Prepare, publish and check
 
-Use a dedicated metadata login with only the privileges the publisher needs. The current preparation code selects a primary role and retains the connection's configured secondary roles. Check the [access guide](access.md#verify-the-metadata-identity) if your operator login holds several roles.
+Use a dedicated metadata login with only the privileges the publisher needs. Preparation uses the selected primary role and disables secondary roles before discovering columns or checking keys. Check the [access guide](access.md#verify-the-metadata-identity) if your operator login holds several roles.
 
 For staged review or separate administrator, metadata and owner logins, use the [split release procedure](releases.md). The combined command uses one named connection with access to the DCM role, metadata role, grant role and application owner role. Set `DEV_CONNECTION` to that connection, `METADATA_ROLE` to the inspection role and `GRANT_ROLE` to the grant administrator role. Then run the command from your checkout.
 

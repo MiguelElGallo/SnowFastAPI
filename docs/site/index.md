@@ -42,7 +42,7 @@ Deploy the demo in your environment. If the service already exists, [publish you
 </div>
 </div>
 
-The Python client and deployment commands run from the application checkout supplied by your operator. The browser tutorial only needs a deployed service.
+The Python client and deployment commands run from the application checkout supplied by your operator. For the browser tutorial, ask your operator for the service URL.
 
 ## While you work
 

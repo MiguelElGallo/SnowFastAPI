@@ -104,3 +104,17 @@
 }
 .sf-nav-trigger:focus-visible, .sf-nav-close:focus-visible,
 .md-header label[for="__search"]:focus-visible { outline: 2px solid var(--md-accent-fg-color); outline-offset: 2px; }
+.sf-error {
+  margin: 0;
+  padding: 8vh 8vw;
+  background: #f3f8f8;
+  color: #17323d;
+  font: 1.1rem/1.6 system-ui, sans-serif;
+}
+.sf-error main { max-width: 38rem; }
+.sf-error h1 { line-height: 1.15; }
+.sf-error a { color: #005a60; text-underline-offset: .2em; }
+@media (prefers-color-scheme: dark) {
+  .sf-error { background: #12242d; color: #f1f8fa; }
+  .sf-error a { color: #8bdfd5; }
+}

@@ -12,8 +12,8 @@ If you contact your operator, send the time and timezone, route path without its
 | A request returns 422 | Supply an integer limit between 1 and the route maximum. Check that a cursor is within its length limit. |
 | A page returns 409 or repeats unexpected rows | Check current key values and masking. A valid paging key must stay non-null, unique and visible for this reader. [Key requirements](../reference/configuration.md#pagination-keys) |
 | The response is 413, 429 or 504 | Reduce the page size or projection on 413. On 429 wait for `Retry-After`. On 504 inspect query history and warehouse performance before retrying. |
-| The data route returns 500 on a table with an interval | Publish an explicit projection with supported column types, or use a tested source representation. The current serializer cannot encode connector-native day-time intervals. [JSON types](../reference/types.md) |
-| The interactive documentation page is blank | Open `/openapi.json` for the contract. The hosted gateway's content security policy blocked the default Swagger CDN assets in DEV. |
+| A duration or MAP looks different from its SQL client display | Intervals use signed Snowflake text and MAPs use JSON string keys. Compare the declared type and the examples in [JSON types](../reference/types.md). |
+| The interactive documentation page is blank | Sign in at the service origin and reload `/docs`. Check whether `/openapi.json` loads there. An older package may still reference remote Swagger assets. |
 | Capabilities are true but the build fails on a trial | Hosting requires a paid account. The trial builder returned 395054 in DEV. After conversion the same account successfully hosted the service. [Snowflake trial conversion](https://docs.snowflake.com/en/user-guide/admin-trial-account#label-trial-account-convert) |
 | Deployment reports an error after the URL is live | Inspect the active package version and pending caller-grant retirement before repeating the deployment. [Recover a release](releases.md#recover-a-failed-or-unwanted-release) |
 

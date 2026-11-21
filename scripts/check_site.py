@@ -9,7 +9,7 @@ from urllib.parse import unquote, urljoin, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT = tomllib.loads((ROOT / "zensical.toml").read_text())["project"]
 SITE = ROOT / PROJECT["site_dir"]
-BASE = PROJECT["site_url"]
+BASE = "https://docs.invalid" + PROJECT["extra"]["project_path"]
 ORIGIN = urlsplit(BASE)
 
 

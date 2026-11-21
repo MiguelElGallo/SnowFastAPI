@@ -32,23 +32,27 @@ Open two pages as the intended reader and compare the result with a direct query
 
 ## Verify the metadata identity
 
-The metadata login reads column names, discovers primary keys and checks current key values during `prepare`. Use a dedicated, narrowly privileged identity. In a session opened with the same connection and primary role, inspect its configured secondary roles.
+The metadata login reads column names, discovers primary keys and checks current key values during preparation. The publisher runs `USE SECONDARY ROLES NONE` before discovery. Choose a primary role with SELECT on every source and USAGE on the databases, schemas and metadata warehouse. To inspect the same context in a new SQL session, select that primary role, then run the following statements.
 
 ```sql
+USE SECONDARY ROLES NONE;
 SELECT CURRENT_ROLE(), CURRENT_SECONDARY_ROLES();
 ```
 
-Selecting `--metadata-role` sets the primary role. This release retains the connection's default secondary roles, including any stronger role available there. A separate SQL session's `USE SECONDARY ROLES NONE` setting applies only to that session. Give the publishing identity appropriately scoped roles and check its defaults. [Snowflake secondary roles](https://docs.snowflake.com/en/sql-reference/sql/use-secondary-roles)
+Pass the role with `--metadata-role`. An inaccessible relation fails preparation and identifies a grant to check before publishing. [Snowflake secondary roles](https://docs.snowflake.com/en/sql-reference/sql/use-secondary-roles)
 
 ## Replace a reader group
 
-First give the replacement role service and data access, then verify that a member can read the intended rows. Changing `reader_role` adds the new service share. The current deployer leaves the previous share in place.
-
-Inspect `SHOW GRANTS ON APPLICATION SERVICE`. After verifying which grant belongs to the retiring group, revoke that specific share as the service owner. Replace `OLD_API_READER` with the reviewed role.
+To move an audience from one team to another, keep the project reader role. Grant that role to the new team's role, have a member read a page, then revoke the membership from the old team. The service and its data grants stay available throughout this change.
 
 ```sql
-REVOKE USAGE ON APPLICATION SERVICE SNOWFASTAPI_DEV.API.SNOWFASTAPI
-  FROM ROLE OLD_API_READER;
+GRANT ROLE SNOWFASTAPI_DEV_READER TO ROLE NEW_REPORTING_TEAM;
+-- After the new team verifies a page:
+REVOKE ROLE SNOWFASTAPI_DEV_READER FROM ROLE OLD_REPORTING_TEAM;
 ```
 
-Check the grants again. A user can still open the service through another role grant. A user's existing direct access to source data is administered independently.
+### Change the project reader role
+
+Create a distinct, dedicated replacement role and set it as `reader_role` in the DCM target. For the metadata step, use a separate role that can already read the sources and use the query warehouse. If the replacement reader will also prepare metadata, first grant it USAGE on the project database and query warehouse. Apply the DCM definitions so it has the demo schema and table grants before running `prepare`. Review the generated grant and retirement SQL. DCM manages the demo table and schema grants. The publisher grants access to the project database, query warehouse and service. During a combined rotation, the publisher temporarily retains the outgoing reader’s existing DCM demo grants while it builds the new package. Once that package is healthy, it shares the service with the replacement role, revokes the previous project-managed share, and reapplies the final DCM definition. The grant administrator completes the retirement of the previous reader's project database and warehouse grants.
+
+Use the split [release procedure](releases.md) to inspect changes before applying them. Check `SHOW GRANTS ON APPLICATION SERVICE` and make a request as a member of the replacement group. Other direct service shares, customer table grants and user role memberships are administered separately.
