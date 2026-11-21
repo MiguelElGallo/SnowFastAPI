@@ -6,7 +6,7 @@ You need a browser, the service URL from your operator, and a Snowflake user who
 
 ## Read the first page
 
-Open `/v1/tables/demo?limit=2` on the service. Complete Snowflake sign-in if prompted. Your browser displays JSON with two products. The first product is Notebook, with ID 1. The second is Pencil, with ID 2.
+In the address bar, keep the scheme and hostname of your service and replace any existing path, including `/openapi.json`, with `/v1/tables/demo?limit=2`. Complete Snowflake sign-in if prompted. Your browser displays JSON with two products. The first product is Notebook, with ID 1. The second is Pencil, with ID 2. If you see 403 or the demo path is missing, use the [request troubleshooting guide](../how-to/troubleshoot.md).
 
 Look at the two top-level fields. `items` contains the rows. `next_cursor` contains a string that marks the last row you received. Copy the string inside the quotes. Keep your own value for the next step.
 

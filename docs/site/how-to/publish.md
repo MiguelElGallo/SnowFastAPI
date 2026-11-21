@@ -16,7 +16,7 @@ The section name becomes `/v1/tables/orders`. The publisher reads the declared p
 
 ## Choose which columns to publish
 
-If you omit `columns`, the release captures all columns visible during preparation. To keep newly added source columns out of future releases until you approve them, specify a projection. Include every pagination key.
+If you omit `columns`, the release captures all columns visible during preparation. To keep newly added source columns out of future releases until you approve them, replace the example section above with the following section. Include every pagination key.
 
 ```toml
 [tables.orders]
@@ -32,7 +32,7 @@ A keyless table needs an explicit `key`. A view also needs `kind = "view"` and a
 
 Use a dedicated metadata login with only the privileges the publisher needs. The current preparation code selects a primary role and retains the connection's configured secondary roles. Check the [access guide](access.md#verify-the-metadata-identity) if your operator login holds several roles.
 
-For staged review, [prepare the release and inspect its catalog diff](releases.md). To run all steps with your selected operator roles, use the deployment command below from the checkout.
+For staged review or separate administrator, metadata and owner logins, use the [split release procedure](releases.md). The combined command uses one named connection with access to the DCM role, metadata role, grant role and application owner role. Set `DEV_CONNECTION` to that connection, `METADATA_ROLE` to the inspection role and `GRANT_ROLE` to the grant administrator role. Then run the command from your checkout.
 
 ```sh
 uv run --frozen --group operator python manage.py deploy -c "$DEV_CONNECTION" \

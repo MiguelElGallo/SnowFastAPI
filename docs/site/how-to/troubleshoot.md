@@ -1,12 +1,13 @@
 # Troubleshoot a request
 
-Start with the exact URL path, HTTP status and whether Snowflake prompted for sign-in. An operator can correlate a data request with warehouse query history using the query tag `SnowFastAPI`.
+If you contact your operator, send the time and timezone, route path without its cursor, HTTP status, and whether Snowflake prompted for sign-in. The operator can find a data request's query ID in warehouse query history using its timestamp and the query tag `SnowFastAPI`.
 
 | What you see | What to check |
 | --- | --- |
 | The browser redirects to Snowflake | Sign in at the service origin supplied by your operator. A 302 for an anonymous request is normal, including on `/healthz`. |
 | Sign-in succeeds, but the data route returns 403 | Check service USAGE, the user's default-role data and warehouse privileges, and the execution role's exact caller grants. An unavailable published object can also produce 403. [Check access](access.md) |
-| Only a view intermittently returns 403 | Check the precise `CALLER SELECT ON VIEW` grant and direct SELECT as the reader. DEV observed mixed results for a view with its documented grant. A standard table with a declared key passed repeated hosted checks. Save the failed query ID for your administrator. [Snowflake security](https://docs.snowflake.com/en/developer-guide/snowflake-app-runtime/security) |
+| Only a view intermittently returns 403 | The operator can check the failed query ID, the precise `CALLER SELECT ON VIEW` grant and direct SELECT as the reader. DEV observed mixed results for a view with its documented grant. A standard table with a declared key passed repeated hosted checks. [Snowflake security](https://docs.snowflake.com/en/developer-guide/snowflake-app-runtime/security) |
+| The demo path returns 404 | Open `/openapi.json` on the same service. If the demo route is absent, ask the operator which routes the running release publishes. |
 | A cursor returns 400 | Start at page one of the same route and use the returned cursor unchanged. A configuration change can invalidate earlier cursors. |
 | A request returns 422 | Supply an integer limit between 1 and the route maximum. Check that a cursor is within its length limit. |
 | A page returns 409 or repeats unexpected rows | Check current key values and masking. A valid paging key must stay non-null, unique and visible for this reader. [Key requirements](../reference/configuration.md#pagination-keys) |

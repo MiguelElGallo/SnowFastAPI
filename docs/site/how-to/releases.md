@@ -8,6 +8,11 @@ Set `DEV_CONNECTION`, `METADATA_ROLE` and `GRANT_ROLE` as in [Deploy the demo](d
 
 ```sh
 uv run --frozen --group operator python manage.py plan -c "$DEV_CONNECTION"
+```
+
+Read the proposed DCM changes. Confirm the database, objects, grants and any removals before the DCM operator applies them. The examples use the same named connection throughout. With separate logins, each operator substitutes their own named connection to the same account for their step.
+
+```sh
 uv run --frozen --group operator python manage.py apply-infra -c "$DEV_CONNECTION"
 uv run --frozen --group operator python manage.py prepare -c "$DEV_CONNECTION" \
   --metadata-role "$METADATA_ROLE" --output build/release-2 \
@@ -42,12 +47,13 @@ If the source was already renamed or dropped, an old-name revoke can fail with S
 
 1. Inspect the service's `status`, `source`, `is_upgrading` and URL. A failed build can leave a staging object and candidate caller grants. Compare `SHOW CALLER GRANTS TO ROLE` with the catalog that is serving traffic before removing a grant.
 2. If you need a previous working version, restore its exact caller grants. List versions with `SHOW VERSIONS IN ARTIFACT REPOSITORY SNOWFASTAPI_DEV.API.SNOWFASTAPI_REPO FOR PACKAGE SNOWFASTAPI`.
-3. As service owner, select the previously verified version. For example, if your listing identifies `VERSION$4` as the intended version, run the statement below in a SQL editor.
-4. Check the package version, open the route and follow a cursor. Have the grant administrator retire privileges used only by the superseded release. Pass the catalog for the restored version with `--previous` when deploying again.
+3. As service owner, select the previously verified version. For example, if your listing identifies `VERSION$4` as the intended version, run this statement in a SQL editor.
 
-```sql
-ALTER APPLICATION SERVICE SNOWFASTAPI_DEV.API.SNOWFASTAPI
-  UPGRADE TO VERSION VERSION$4;
-```
+    ```sql
+    ALTER APPLICATION SERVICE SNOWFASTAPI_DEV.API.SNOWFASTAPI
+      UPGRADE TO VERSION VERSION$4;
+    ```
+
+4. Check the package version, open the route and follow a cursor. Have the grant administrator retire privileges used only by the superseded release. Pass the catalog for the restored version with `--previous` when deploying again.
 
 An App Runtime health-check failure can return the service to its last healthy version at the same URL. Version checks distinguish a successful rollout from a healthy older package. [Snowflake package deployment and rollback](https://docs.snowflake.com/en/developer-guide/snowflake-app-runtime/deploy)
