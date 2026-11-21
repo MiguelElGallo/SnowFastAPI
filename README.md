@@ -15,4 +15,3 @@ uvx --from zensical==0.1.3 zensical serve
 ```
 
 Edit the Markdown pages in `docs/site/`. Navigation and the theme are configured in `zensical.toml`. Pull requests build and check the site. Merges to `main` publish it to GitHub Pages.
-Serve Snowflake data via FastAPI

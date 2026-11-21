@@ -6,6 +6,12 @@ Use this guide to give a group access to a service, check the privileges used to
 
 The demo bootstrap creates `SNOWFASTAPI_DEV_READER`. DCM grants it access to the demo table. The service owner grants it `USAGE` on the running service after publication. An administrator can grant that reader role to an existing role in the intended user's hierarchy.
 
+For example, if `REPORTING_TEAM` is the reader's existing default role, the administrator who manages the role hierarchy can run the following grant. Substitute the intended role in your organization.
+
+```sql
+GRANT ROLE SNOWFASTAPI_DEV_READER TO ROLE REPORTING_TEAM;
+```
+
 For a customer dataset, check these two permissions separately.
 
 | The user needs to | Grant to check |
