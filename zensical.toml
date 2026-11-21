@@ -4,8 +4,8 @@ site_description = "Publish Snowflake tables as paginated, read-only FastAPI end
 site_url = "https://example.invalid/SnowFastAPI/"
 docs_dir = "docs/site"
 site_dir = "site"
-repo_name = "Documentation source"
 extra_css = ["assets/site.css"]
+extra_javascript = ["assets/navigation.js"]
 nav = [
   { "Overview" = "index.md" },
   { "Tutorial" = [{ "Read your first five rows" = "tutorials/read-five-rows.md" }] },
