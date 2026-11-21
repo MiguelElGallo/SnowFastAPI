@@ -50,7 +50,11 @@ def main():
             checked += 1
             if not path.is_file():
                 errors.add(f"{file.relative_to(SITE)}: missing file: {link}")
-            elif target.fragment and path in pages and unquote(target.fragment) not in pages[path].ids:
+            elif (
+                target.fragment
+                and path in pages
+                and unquote(target.fragment) not in pages[path].ids
+            ):
                 errors.add(f"{file.relative_to(SITE)}: missing fragment: {link}")
     if errors:
         sys.exit("\n".join(sorted(errors)))
