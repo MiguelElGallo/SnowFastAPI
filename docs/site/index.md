@@ -42,7 +42,7 @@ Deploy the demo in your environment. If the service already exists, [publish you
 </div>
 </div>
 
-This public repository contains the manual. The Python client and deployment commands run from the application checkout supplied by your operator. The browser tutorial only needs a deployed service.
+The Python client and deployment commands run from the application checkout supplied by your operator. The browser tutorial only needs a deployed service. You can also [browse the documentation source on GitHub](https://github.com/MiguelElGallo/SnowFastAPI).
 
 ## While you work
 
