@@ -80,7 +80,7 @@ The infrastructure, metadata preparation and local client/warehouse checks work 
 uv sync --frozen --all-groups
 uv run --group client playwright install chromium
 SNOWFASTAPI_TEST_CONNECTION="$DEV_CONNECTION" SNOWFASTAPI_TEST_DEV=1 \
-  uv run --group client pytest -q
+  uv run --locked --all-groups pytest -q
 ```
 
 ## Test the hosted service
@@ -90,7 +90,7 @@ After deployment, run the client with the reader role. It resolves the service U
 ```sh
 uv run python client.py demo -c "$DEV_CONNECTION" --role SNOWFASTAPI_DEV_READER --limit 2 --pages 3
 SNOWFASTAPI_TEST_CONNECTION="$DEV_CONNECTION" SNOWFASTAPI_TEST_DEV=1 SNOWFASTAPI_TEST_HOSTED=1 \
-  uv run --group client pytest -q
+  uv run --locked --all-groups pytest -q
 ```
 
-The hosted smoke test checks the row IDs, final cursor and rejection of a limit above 50. To validate your own data policies, run the client under two existing Snowflake identities whose default roles have different row or column entitlements. Compare their results with the same SELECT executed directly as each user.
+The hosted smoke test checks the row IDs, final cursor and rejection of a request one row above the maximum documented in the deployed OpenAPI schema. To validate your own data policies, run the client under two existing Snowflake identities whose default roles have different row or column entitlements. Compare their results with the same SELECT executed directly as each user.

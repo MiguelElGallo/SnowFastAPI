@@ -46,6 +46,12 @@ The strict Zensical build checked 741 links, fragments and assets across 16 HTML
 
 The privacy review checked source files, Git history, and the generated site for account identifiers and credentials. Deployment receipts and raw verification evidence are stored separately from the source.
 
+## Client and test setup follow-up
+
+Public review identified ambiguous input in the browser client's service URL and a missing dependency group in the README's offline test command. The client now validates the host and passes a canonical origin to the browser. The command installs the locked client and test dependencies. An independent reviewer checked both changes.
+
+In a fresh Python environment, 86 offline tests passed. With all four Snowflake checks enabled, all 90 tests passed. The revised client read all five demo rows from the deployed API, resumed pagination in a new process, and checked the maximum page size advertised by OpenAPI.
+
 ## Scope of the release verdict
 
 The serverless table workflow passed the implementation review and the DEV acceptance checks. Use one publisher at a time across CI runners and preserve the last successful catalog. The default demo uses a standard table. The earlier intermittent hosted-view 403 remains a qualification item for each view. [Hosted view observations](../verification.md#hosted-views)

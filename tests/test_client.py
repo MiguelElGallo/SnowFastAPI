@@ -8,6 +8,25 @@ import pytest
 import client
 
 
+@pytest.mark.parametrize("character", ["\\", "%", "\t", " "])
+def test_service_origin_requires_dns_label_characters(character):
+    url = "https://demo.snowflake.app".replace("demo", "de" + character + "mo")
+    with pytest.raises(ValueError):
+        client.service_origin(url)
+
+
+@pytest.mark.parametrize(
+    ("url", "origin"),
+    [
+        ("HTTPS://DEMO.SNOWFLAKE.APP/", "https://demo.snowflake.app"),
+        ("http://localhost:8080/", "http://localhost:8080"),
+        ("http://[::1]:8000/", "http://[::1]:8000"),
+    ],
+)
+def test_service_origin_returns_canonical_host_and_port(url, origin):
+    assert client.service_origin(url) == origin
+
+
 @pytest.mark.parametrize(
     ("status", "hint"),
     [

@@ -12,19 +12,21 @@ from urllib.parse import urlencode, urlsplit
 
 def service_origin(url: str) -> str:
     parsed = urlsplit(url)
-    local = parsed.hostname in {"localhost", "127.0.0.1", "::1"}
-    hosted = parsed.scheme == "https" and (parsed.hostname or "").endswith(".snowflake.app")
+    host = parsed.hostname or ""
+    local = host in {"localhost", "127.0.0.1", "::1"}
+    hosted = parsed.scheme == "https" and re.fullmatch(
+        r"(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+snowflake\.app", host, re.ASCII
+    )
     if not (hosted or (local and parsed.scheme in {"http", "https"})):
         raise ValueError("Use the HTTPS Snowflake serverless app URL or a loopback test server")
-    if (
-        parsed.username
-        or parsed.password
-        or parsed.path not in ("", "/")
-        or parsed.query
-        or parsed.fragment
-    ):
+    authority = "[::1]" if host == "::1" else host
+    if parsed.port is not None:
+        authority += f":{parsed.port}"
+    origin = f"{parsed.scheme}://{authority}"
+    # Pass the browser the same ASCII origin we validated, allowing a single trailing slash.
+    if not url.isascii() or url.lower() not in (origin, origin + "/"):
         raise ValueError("Supply just the service origin")
-    return f"{parsed.scheme}://{parsed.netloc}"
+    return origin
 
 
 def page_json(status: int, content_type: str, body: bytes, retry_after: str | None = None):

@@ -77,7 +77,7 @@ Snowflake column names are the JSON field names. Fixed-point decimals and intege
 - The service accepts four concurrent queries, caps item data per page at 4 MiB and sets a 30-second Snowflake statement timeout. Responses use `private, no-store`. Uvicorn access logs omit request URLs by disabling access logging. Queries carry the `SnowFastAPI` tag. The warehouse and serverless application compute are billed separately. [App Runtime cost](https://docs.snowflake.com/en/developer-guide/snowflake-app-runtime/cost)
 - A bad cursor returns 400, missing caller context 401, denied data access 403, an unknown route 404, invalid key data 409, an oversized page 413, invalid limits 422 and saturation 429 with `Retry-After`. Warehouse timeouts return 504 and other database failures return 503. `/healthz` checks process readiness without a data query.
 
-Run the offline tests with `uv run --frozen pytest -q`. The [deployment guide](docs/deployment.md) covers the trial-compatible tests, administrator roles, scoped revocations and rollback.
+Run the offline tests with `uv run --locked --all-groups pytest -q`. This installs the Python dependencies and uses a mock browser. The [deployment guide](docs/deployment.md) covers the trial-compatible tests, administrator roles, scoped revocations and rollback.
 
 ## Build the manual
 

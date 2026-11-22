@@ -22,7 +22,7 @@ Choose an isolated DEV environment with the demo bootstrap and deployed service.
 uv run --frozen --group client playwright install chromium
 SNOWFASTAPI_TEST_CONNECTION="$DEV_CONNECTION" \
   SNOWFASTAPI_TEST_DEV=1 SNOWFASTAPI_TEST_HOSTED=1 \
-  uv run --frozen --group client pytest -q
+  uv run --locked --all-groups pytest -q
 ```
 
 Set `SNOWFASTAPI_TEST_ROLE` if the sample-data test needs a particular role. For an installed Chrome or Edge browser use `SNOWFASTAPI_TEST_BROWSER=chrome` or `msedge`. The hosted check uses the named connection, reads the maximum page size from the live OpenAPI contract, resumes with a fresh session, and tests both the maximum and one row above it. The DEV tests also check the JSON representation of real Snowflake intervals and a numeric-key MAP. If the account is a trial, omit `SNOWFASTAPI_TEST_HOSTED` and use the warehouse checks after preparing the DEV infrastructure. [Trial account limits](https://docs.snowflake.com/en/developer-guide/snowflake-app-runtime/getting-started)
