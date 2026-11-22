@@ -1,6 +1,9 @@
 [project]
 site_name = "SnowFastAPI"
 site_description = "Publish Snowflake tables as paginated, read-only FastAPI endpoints and query them with your Snowflake identity."
+# The Pages build fills this from the current GitHub repository.
+repo_url = ""
+repo_name = "GitHub repository"
 docs_dir = "docs/site"
 site_dir = "site"
 extra_css = ["assets/site.css"]
@@ -38,6 +41,7 @@ variant = "modern"
 language = "en"
 font = false
 icon.logo = "lucide/database"
+icon.repo = "fontawesome/brands/github"
 features = [
   "navigation.tabs", "navigation.sections", "navigation.footer", "navigation.top",
   "navigation.tracking", "search.highlight", "content.code.copy", "toc.follow",

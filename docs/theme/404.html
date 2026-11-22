@@ -12,6 +12,9 @@
       <h1>Page not found</h1>
       <p>Open the manual to find a tutorial, a deployment guide, or the API reference.</p>
       <a href="{{ config.extra.project_path }}">SnowFastAPI manual</a>
+      {% if config.repo_url %}
+      <p><a href="{{ config.repo_url }}">GitHub repository</a></p>
+      {% endif %}
     </main>
   </body>
 </html>

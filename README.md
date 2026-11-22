@@ -88,6 +88,8 @@ uvx --from zensical==0.1.3 zensical build --clean --strict
 python3 scripts/check_site.py
 ```
 
+GitHub Pages adds a repository link to the desktop header and mobile menu. To preview it locally, set `repo_url` in `zensical.toml` to the HTTPS URL of your repository before building.
+
 ## Existing clones
 
 The project reissued its Git history with project attribution on November 21, 2026. If you cloned the repository before this rewrite, save any local work and start from a fresh clone. Transfer local edits as a patch onto the new history. Merging an old branch can restore obsolete attribution.

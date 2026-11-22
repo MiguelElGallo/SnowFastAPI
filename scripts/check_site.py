@@ -1,5 +1,6 @@
 """Verify generated local links, assets and fragments at the GitHub Pages project path."""
 
+import argparse
 import sys
 import tomllib
 from html.parser import HTMLParser
@@ -18,10 +19,13 @@ class Page(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.ids = set()
         self.links = []
+        self.anchor_urls = set()
         self.feed(file.read_text(encoding="utf-8"))
 
     def handle_starttag(self, tag, attrs):
         fields = dict(attrs)
+        if tag == "a" and (href := fields.get("href")):
+            self.anchor_urls.add(href)
         if anchor := fields.get("id"):
             self.ids.add(anchor)
         for attr in ("href", "src"):
@@ -29,13 +33,15 @@ class Page(HTMLParser):
                 self.links.append(value)
 
 
-def main():
+def main(repository_url=None):
     pages = {f: Page(f) for f in SITE.rglob("*.html")}
     if SITE / "index.html" not in pages:
         sys.exit("Build the site before checking links.")
     errors = set()
     checked = 0
     for file, page in pages.items():
+        if repository_url and repository_url not in page.anchor_urls:
+            errors.add(f"{file.relative_to(SITE)}: missing GitHub repository link")
         url = urljoin(BASE, file.relative_to(SITE).as_posix())
         for link in page.links:
             target = urlsplit(urljoin(url, link))
@@ -62,4 +68,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repository-url", help="Check that every page links to this repository")
+    main(parser.parse_args().repository_url)
