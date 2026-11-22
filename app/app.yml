@@ -1,0 +1,24 @@
+version: 2
+name: SNOWFASTAPI
+database: SNOWFASTAPI_DEV
+schema: API
+query_warehouse: SNOWFASTAPI_DEV_WH
+code_stage: SNOWFASTAPI_CODE
+artifact_repo: SNOWFASTAPI_REPO
+compute_resource: SERVERLESS
+runtime: python
+health_check: /healthz
+install:
+  commands:
+    - ["pip", "install", "--require-hashes", "--target", ".python_packages", "-r", "requirements.txt"]
+run:
+  command: ["python", "serve.py"]
+ignore:
+  - .python_packages
+  - __pycache__
+  - "*.pyc"
+  - output
+  - snowflake.log
+  - .env*
+  - .venv
+  - .git

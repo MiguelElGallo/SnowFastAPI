@@ -1,6 +1,6 @@
 # Commands and release files
 
-Run application commands in the implementation checkout. Use Python 3.13 and the checked-in uv lockfile. The documentation repository can be built independently as described in its README.
+Run application commands from the root of the SnowFastAPI repository. Use Python 3.13 and the checked-in uv lockfile. The README also includes the commands for building the manual.
 
 ## Python client
 

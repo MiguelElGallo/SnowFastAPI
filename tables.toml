@@ -1,0 +1,11 @@
+# One section creates one GET /v1/tables/<name> route.
+# Unqualified relations resolve in the deployment's API schema.
+[tables.demo]
+table = "DEMO_PRODUCTS"
+max_page_size = 50
+
+# For a table with a declared primary key, these two lines are enough.
+# [tables.orders]
+# table = "ANALYTICS.SALES.ORDERS"
+# max_page_size = 100
+# columns = ["ORDER_ID", "ORDER_DATE", "TOTAL"]

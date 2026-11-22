@@ -1,0 +1,16 @@
+manifest_version: 2
+type: DCM_PROJECT
+default_target: DEV
+targets:
+  DEV:
+    project_name: SNOWFASTAPI_DEV.DCM.SNOWFASTAPI
+    project_owner: SNOWFASTAPI_DEV_DCM
+    templating_config: DEV
+    # Optional account guard for the CLI, e.g. account_identifier: MYORG-MYACCOUNT
+templating:
+  configurations:
+    DEV:
+      database_name: SNOWFASTAPI_DEV
+      warehouse_name: SNOWFASTAPI_DEV_WH
+      app_owner: SNOWFASTAPI_DEV_OWNER
+      reader_role: SNOWFASTAPI_DEV_READER

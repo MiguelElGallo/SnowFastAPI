@@ -1,0 +1,20 @@
+name: Check
+on: [push, pull_request]
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+      - run: uv sync --locked --all-groups --python 3.13
+      - run: uv run --no-sync ruff check .
+      - run: uv run --no-sync ruff format --check .
+      - run: uv run --no-sync ty check app manage.py publishing.py client.py
+      - run: uv run --no-sync pytest -q
+      - name: Check pinned runtime dependencies
+        run: |
+          uv export --frozen --no-default-groups --no-emit-project --no-header --format requirements-txt > /tmp/runtime-requirements.txt
+          diff -u app/requirements.txt /tmp/runtime-requirements.txt
